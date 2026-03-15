@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="description" content="AI Sekreter Pro V6 Offline Embedded Offline Embedded tek dosyalı alarm ve randevu uygulaması" />
+  <title>AI Sekreter Pro V6 Offline Embedded</title>
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#0b1020;
+      --bg2:#111936;
+      --panel:rgba(19,28,58,.72);
+      --panel-2:rgba(255,255,255,.06);
+      --text:#eef3ff;
+      --muted:#9fb0d8;
+      --line:rgba(255,255,255,.12);
+      --accent:#6ee7ff;
+      --accent-2:#9f7aea;
+      --accent-3:#ff78b2;
+      --green:#32d296;
+      --yellow:#ffd166;
+      --red:#ff6b81;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(110,231,255,.14), transparent 26%),
+        radial-gradient(circle at 88% 15%, rgba(159,122,234,.14), transparent 26%),
+        radial-gradient(circle at 80% 85%, rgba(255,120,178,.10), transparent 26%),
+        linear-gradient(180deg, var(--bg) 0%, #060913 100%);
+      overflow-x:hidden;
+    }
+    .app{
+      max-width:1400px;
+      margin:0 auto;
+      padding:24px;
+    }
+    .hero{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+    .glass{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+    }
+    
+    .hero-card{padding:26px}
+    .hero-side-card{
+      padding:22px;
+      position:relative;
+      overflow:hidden;
+      min-height:100%;
+      background:
+        radial-gradient(circle at top right, rgba(110,231,255,.16), transparent 34%),
+        radial-gradient(circle at bottom left, rgba(159,122,234,.16), transparent 30%),
+        var(--panel);
+    }
+    .hero-side-card::before{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(135deg, rgba(255,255,255,.05), transparent 45%, rgba(255,255,255,.02));
+      pointer-events:none;
+    }
+
+    .title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;flex-wrap:wrap}
+    .brand{display:flex;gap:16px;align-items:center}
+    .logo{
+      width:66px;height:66px;border-radius:18px;
+      background:linear-gradient(135deg, rgba(110,231,255,.18), rgba(159,122,234,.18));
+      display:grid;place-items:center;border:1px solid rgba(255,255,255,.14);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04), 0 14px 30px rgba(0,0,0,.25);
+    }
+    .logo svg{width:34px;height:34px;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    h1{margin:0;font-size:clamp(1.5rem,2.4vw,2.25rem);letter-spacing:.01em}
+    .sub{color:var(--muted);margin-top:6px;line-height:1.5}
+    .clock{
+      text-align:right;
+      min-width:260px;
+    }
+    .clock .time{font-size:clamp(2rem,4.7vw,4rem);font-weight:800;letter-spacing:.04em}
+    .clock .date{font-size:1rem;color:var(--muted);margin-top:6px}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+    .stat{padding:18px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .stat .k{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.92rem}
+    .stat .v{font-size:1.65rem;font-weight:800;margin-top:10px}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:var(--text);font-size:.87rem}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    button,.btn,input,select,textarea{font:inherit}
+    button,.btn{
+      border:0;cursor:pointer;color:var(--text);
+      border-radius:14px;padding:12px 16px;transition:.2s transform,.2s opacity,.2s background,.2s border-color;
+    }
+    button:hover,.btn:hover{transform:translateY(-1px)}
+    button:active,.btn:active{transform:translateY(0)}
+    .btn-primary{background:linear-gradient(135deg, rgba(110,231,255,.95), rgba(159,122,234,.95));color:#07101f;font-weight:800}
+    .btn-soft{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+    .btn-danger{background:rgba(255,107,129,.13);border:1px solid rgba(255,107,129,.28)}
+    .btn-success{background:rgba(50,210,150,.14);border:1px solid rgba(50,210,150,.28)}
+    .btn-warning{background:rgba(255,209,102,.12);border:1px solid rgba(255,209,102,.25)}
+    .layout{display:grid;grid-template-columns:320px 1fr;gap:18px}
+    .sidebar,.content{min-width:0}
+    .panel{padding:18px}
+    .panel h2,.panel h3{margin:0 0 12px 0}
+    .mini-card{padding:16px;border-radius:18px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+    .mini-grid{display:grid;gap:14px}
+    .weather{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
+    .weather-icon{width:60px;height:60px;border-radius:18px;background:linear-gradient(135deg, rgba(255,209,102,.16), rgba(110,231,255,.16));display:grid;place-items:center}
+    .weather-icon svg{width:30px;height:30px;stroke:var(--yellow);fill:none;stroke-width:1.8}
+    .small{font-size:.93rem;color:var(--muted)}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+    .tab{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);padding:11px 14px;border-radius:14px;color:var(--muted)}
+    .tab.active{color:#07101f;background:linear-gradient(135deg, rgba(110,231,255,.95), rgba(159,122,234,.95));font-weight:800}
+    .section{display:none}
+    .section.active{display:block}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .toolbar .left,.toolbar .right{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .search{
+      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:var(--text);
+      border-radius:14px;padding:12px 14px;min-width:220px;outline:none
+    }
+    .card-list{display:grid;gap:14px}
+    .item{
+      padding:18px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);
+      display:flex;justify-content:space-between;gap:18px;align-items:center
+    }
+    .item.expired{border-color:rgba(255,107,129,.32);background:rgba(255,107,129,.08)}
+    .item.disabled{opacity:.58}
+    .item-main{display:flex;gap:15px;align-items:flex-start;min-width:0}
+    .round-icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;background:rgba(110,231,255,.12);border:1px solid rgba(110,231,255,.24)}
+    .round-icon svg{width:26px;height:26px;stroke:var(--accent);fill:none;stroke-width:1.8}
+    .item h4{margin:0 0 6px 0;font-size:1.15rem}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.94rem}
+    .pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+    .pill{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:.84rem;color:var(--muted)}
+    .item-side{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .switch{position:relative;width:54px;height:30px;border-radius:999px;background:#42506f;border:1px solid rgba(255,255,255,.12);cursor:pointer}
+    .switch span{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}
+    .switch.on{background:linear-gradient(135deg, rgba(110,231,255,.95), rgba(159,122,234,.95))}
+    .switch.on span{left:27px}
+    .empty{padding:34px 18px;text-align:center;color:var(--muted);border:1px dashed rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.03)}
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .field{display:grid;gap:8px}
+    label{font-size:.93rem;color:var(--muted)}
+    input[type="text"],input[type="time"],input[type="date"],input[type="number"],select,textarea{
+      width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:var(--text);outline:none;
+      border-radius:14px;padding:13px 14px;
+    }
+    textarea{min-height:92px;resize:vertical}
+    .days{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+    .day{
+      border-radius:14px;padding:12px 0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);cursor:pointer;text-align:center;color:var(--muted)
+    }
+    .day.active{background:linear-gradient(135deg, rgba(110,231,255,.95), rgba(159,122,234,.95));color:#07101f;font-weight:800}
+    .modal,.overlay,.drawer{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;z-index:50;background:rgba(2,6,16,.64);backdrop-filter:blur(10px)
+    }
+    .modal.show,.overlay.show,.drawer.show{display:flex}
+    .modal-card{
+      width:min(860px,100%);max-height:min(92vh,100%);overflow:auto;padding:20px;border-radius:26px;background:linear-gradient(180deg, rgba(16,23,48,.95), rgba(9,14,29,.95));border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow)
+    }
+    .modal-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+    .close-btn{width:42px;height:42px;border-radius:14px;padding:0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12)}
+    .url-rows{display:grid;gap:10px}
+    .url-row{display:grid;grid-template-columns:1fr auto auto auto;gap:10px;align-items:center}
+    .tiny{padding:10px 12px;border-radius:12px}
+    .alarm-overlay-card{width:min(840px,100%);padding:28px;border-radius:30px;text-align:center;background:linear-gradient(135deg, rgba(16,24,48,.96), rgba(10,14,28,.98));border:1px solid rgba(255,255,255,.14);box-shadow:var(--shadow)}
+    .pulse{width:124px;height:124px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at center, rgba(110,231,255,.28), rgba(159,122,234,.2));box-shadow:0 0 0 0 rgba(110,231,255,.35);animation:pulse 1.6s infinite}
+    .pulse svg{width:54px;height:54px;stroke:var(--accent);fill:none;stroke-width:1.8}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(110,231,255,.35)}70%{box-shadow:0 0 0 36px rgba(110,231,255,0)}100%{box-shadow:0 0 0 0 rgba(110,231,255,0)}}
+    .overlay-title{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;margin:0}
+    .overlay-sub{color:var(--muted);font-size:1rem;margin:8px 0 18px}
+    .overlay-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+    iframe.player{width:100%;aspect-ratio:16/9;border:0;border-radius:18px;background:#000}
+    .toast-wrap{position:fixed;right:18px;bottom:18px;display:grid;gap:10px;z-index:90;max-width:min(420px,calc(100vw - 36px))}
+    .toast{padding:14px 16px;border-radius:18px;border:1px solid rgba(255,255,255,.1);background:rgba(14,20,42,.92);box-shadow:var(--shadow)}
+    .toast.success{border-color:rgba(50,210,150,.3)}
+    .toast.error{border-color:rgba(255,107,129,.3)}
+    .toast.info{border-color:rgba(110,231,255,.3)}
+    .calendar{display:grid;gap:14px}
+    .calendar-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+    .dow,.day-cell{padding:10px 0;border-radius:14px;text-align:center}
+    .dow{color:var(--muted);font-size:.86rem}
+    .day-cell{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);min-height:78px;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;gap:8px;padding-top:10px;cursor:pointer}
+    .day-cell.out{opacity:.35}
+    .day-cell.today{outline:2px solid rgba(110,231,255,.5)}
+    .day-cell.selected{background:rgba(110,231,255,.1)}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+    .timer-display{font-size:clamp(2.2rem,6vw,4.6rem);font-weight:800;letter-spacing:.04em;text-align:center;margin:14px 0}
+    .range{display:grid;gap:8px}
+    .timezones{display:grid;gap:12px}
+    .tz-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09)}
+    .mono{font-variant-numeric:tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
+    .status-line{display:flex;gap:10px;flex-wrap:wrap}
+    .helper{padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--muted)}
+    .kbd{padding:3px 7px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:.84rem;color:var(--text)}
+    .media-shell{display:grid;gap:14px;margin-top:16px}
+    .media-native{width:100%;max-height:62vh;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:#000}
+    .media-fallback{padding:18px;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
+    .thumb{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;background:#000;border:1px solid rgba(255,255,255,.08)}
+    .footer-note{margin-top:12px;color:var(--muted);font-size:.9rem;line-height:1.6}
+    @media (max-width:1080px){
+      .hero,.layout{grid-template-columns:1fr}
+      .stats,.grid-3{grid-template-columns:repeat(2,1fr)}
+      .clock{text-align:left}
+    }
+    @media (max-width:720px){
+      .app{padding:14px}
+      .stats,.grid-2,.grid-3{grid-template-columns:1fr}
+      .days{grid-template-columns:repeat(4,1fr)}
+      .item{flex-direction:column;align-items:stretch}
+      .item-side{justify-content:flex-start}
+      .url-row{grid-template-columns:1fr 1fr}
+      .url-row .wide{grid-column:1/-1}
+      .calendar-grid{gap:6px}
+      .day-cell{min-height:64px}
+    }
+  
+    .hero-toolbar{display:grid;gap:16px}
+    .hero-toolbar-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+    .eyebrow{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+    .hero-toolbar-title{font-size:1.15rem;font-weight:800}
+    .hero-toolbar-copy{margin-top:6px;color:var(--muted);line-height:1.6}
+    .hero-actions-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .hero-action-btn{display:flex;flex-direction:column;align-items:flex-start;text-align:left;min-height:72px}
+    .hero-action-btn small{display:block;margin-top:6px;color:var(--muted)}
+    .hero-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .hero-mini-stat{padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}
+    .hero-mini-stat .label{font-size:.86rem;color:var(--muted)}
+    .hero-mini-stat .value{margin-top:7px;font-weight:700}
+    .feature-pills{display:flex;gap:8px;flex-wrap:wrap}
+    .feature-pill{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:.85rem}
+
+    .app-icon-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .app-icon-tile{
+      width:58px;height:58px;border-radius:18px;display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(110,231,255,.18), rgba(159,122,234,.22) 55%, rgba(255,120,178,.18));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.05), 0 14px 28px rgba(0,0,0,.28)
+    }
+    .app-icon-tile svg{width:30px;height:30px;stroke:var(--accent);fill:none;stroke-width:1.8}
+    .install-pill{background:rgba(50,210,150,.12);border-color:rgba(50,210,150,.24)}
+    .install-pill.pending{background:rgba(255,209,102,.12);border-color:rgba(255,209,102,.24)}
+    .install-pill.unsupported{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+
+    .splash-screen{
+      position:fixed;inset:0;z-index:120;display:flex;align-items:center;justify-content:center;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(110,231,255,.16), transparent 28%),
+        radial-gradient(circle at 80% 15%, rgba(159,122,234,.16), transparent 28%),
+        radial-gradient(circle at 75% 80%, rgba(255,120,178,.10), transparent 28%),
+        linear-gradient(180deg, #08101f 0%, #050812 100%);
+      transition:opacity .45s ease, visibility .45s ease;
+    }
+    .splash-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+    .splash-card{
+      width:min(480px,calc(100vw - 32px));padding:30px 26px;border-radius:28px;text-align:center;
+      background:rgba(14,20,42,.76);border:1px solid rgba(255,255,255,.12);box-shadow:var(--shadow);
+      backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+    }
+    .splash-icon{
+      width:94px;height:94px;border-radius:28px;margin:0 auto 18px;display:grid;place-items:center;
+      background:linear-gradient(135deg, rgba(110,231,255,.2), rgba(159,122,234,.22), rgba(255,120,178,.18));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 18px 34px rgba(0,0,0,.26), inset 0 0 0 1px rgba(255,255,255,.04)
+    }
+    .splash-icon svg{width:48px;height:48px;stroke:var(--accent);fill:none;stroke-width:1.8}
+    .splash-title{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:800;margin:0}
+    .splash-copy{color:var(--muted);margin:10px auto 18px;line-height:1.65;max-width:42ch}
+    .splash-progress{
+      height:8px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid rgba(255,255,255,.08)
+    }
+    .splash-progress > span{
+      display:block;height:100%;width:0%;
+      background:linear-gradient(90deg, rgba(110,231,255,.96), rgba(159,122,234,.96), rgba(255,120,178,.96));
+      animation:splashFill 1.6s ease forwards
+    }
+    .splash-hint{margin-top:14px;color:var(--muted);font-size:.92rem}
+    @keyframes splashFill{from{width:0%}to{width:100%}}
+
+    @media (display-mode: standalone){
+      body{padding-top:env(safe-area-inset-top,0)}
+      .app{padding-top:max(14px, env(safe-area-inset-top, 14px))}
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="splash-screen" id="splashScreen" aria-hidden="true">
+    <div class="splash-card">
+      <div class="splash-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.9 4.9l2.8 2.8"/><path d="M16.3 16.3l2.8 2.8"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.9 19.1l2.8-2.8"/><path d="M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4.2"/></svg>
+      </div>
+      <h2 class="splash-title">AI Sekreter Pro V6</h2>
+      <div class="splash-copy">Offline embedded sürüm başlatılıyor. Alarm, randevu ve üretim seviyesine yakın PWA kurulumu hazırlanıyor.</div>
+      <div class="splash-progress" aria-hidden="true"><span></span></div>
+      <div class="splash-hint" id="splashHint">Arayüz hazırlanıyor…</div>
+    </div>
+  </div>
+
+  <div class="app">
+    <section class="hero">
+      <div class="glass hero-card">
+        <div class="title-row">
+          <div>
+            <div class="brand">
+              <div class="logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.9 4.9l2.8 2.8"/><path d="M16.3 16.3l2.8 2.8"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.9 19.1l2.8-2.8"/><path d="M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4.2"/></svg>
+              </div>
+              <div>
+                <h1>AI Sekreter Pro V6</h1>
+                <div class="sub"><span class="badge" style="margin-right:8px;background:rgba(50,210,150,.14);border-color:rgba(50,210,150,.28);">Tam Offline Arayüz</span>Tek dosyada çalışan, daha güvenilir alarm mantığına sahip, modern ve üretim seviyesine yakın kişisel zaman yönetimi paneli.</div>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="btn-primary" id="btnOpenAlarm">+ Yeni Alarm</button>
+              <button class="btn-soft" id="btnOpenAppointment">+ Yeni Randevu</button>
+              <button class="btn-soft" id="btnRequestNotification">Bildirim İzni</button>
+              <button class="btn-soft" id="btnVoice">Sesli Komut</button>
+              <button class="btn-soft" id="btnInstallPWA" hidden>Uygulamayı Yükle</button>
+            </div>
+          </div>
+          <div class="clock">
+            <div class="time mono" id="liveClock">00:00:00</div>
+            <div class="date" id="liveDate">—</div>
+            <div class="status-line" style="justify-content:flex-end;margin-top:14px">
+              <span class="badge" id="notifState">Bildirim: kontrol ediliyor</span>
+              <span class="badge" id="voiceState">Ses: hazır değil</span>
+              <span class="badge install-pill unsupported" id="installState">Kurulum: kontrol ediliyor</span>
+            </div>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="k"><span>Aktif alarm</span><span>⏰</span></div><div class="v mono" id="statActiveAlarms">0</div></div>
+          <div class="stat"><div class="k"><span>Bugünkü randevu</span><span>📅</span></div><div class="v mono" id="statTodayAppointments">0</div></div>
+          <div class="stat"><div class="k"><span>Bir sonraki alarm</span><span>🕒</span></div><div class="v" id="statNextAlarm">Yok</div></div>
+          <div class="stat"><div class="k"><span>Süre durumu</span><span>⏳</span></div><div class="v mono" id="statTimerState">00:00</div></div>
+        </div>
+      </div>
+      <div class="glass hero-side-card">
+        <div class="hero-toolbar">
+          <div class="hero-toolbar-head">
+            <div>
+              <div class="app-icon-wrap">
+                <div class="app-icon-tile" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.9 4.9l2.8 2.8"/><path d="M16.3 16.3l2.8 2.8"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.9 19.1l2.8-2.8"/><path d="M16.3 7.7l2.8-2.8"/><circle cx="12" cy="12" r="4.2"/></svg>
+                </div>
+                <div>
+                  <div class="eyebrow">Yönetim Paneli</div>
+              <div class="hero-toolbar-title">Hızlı işlemler ve sistem görünümü</div>
+              <div class="hero-toolbar-copy">Dışa aktarım, içe aktarım, veri temizleme ve teknik notlar tek noktada toplandı. Arayüz daha hızlı erişim için yeniden düzenlendi.</div>
+                </div>
+              </div>
+            </div>
+            <span class="badge" style="background:rgba(110,231,255,.10);border-color:rgba(110,231,255,.24)">V6.3 PWA</span>
+          </div>
+
+          <div class="hero-actions-grid">
+            <button class="btn-soft hero-action-btn" id="btnExport" type="button">Verileri Dışa Aktar<small>JSON yedeği oluştur</small></button>
+            <label class="btn-soft hero-action-btn" for="importFile" style="display:flex;align-items:flex-start;cursor:pointer;flex-direction:column">Veri İçe Aktar<small>Önceki yedeği geri yükle</small></label>
+            <input id="importFile" type="file" accept="application/json" hidden>
+            <button class="btn-soft hero-action-btn" id="btnOpenTechNotes" type="button">Teknik Notlar<small>Modal pencerede görüntüle</small></button>
+            <button class="btn-danger hero-action-btn" id="btnResetData" type="button">Tüm Veriyi Temizle<small>Local verileri sıfırla</small></button>
+          </div>
+
+          <div class="hero-metrics">
+            <div class="hero-mini-stat">
+              <div class="label">Depolama</div>
+              <div class="value">localStorage tabanlı</div>
+            </div>
+            <div class="hero-mini-stat">
+              <div class="label">Çalışma modu</div>
+              <div class="value">Offline embedded</div>
+            </div>
+            <div class="hero-mini-stat">
+              <div class="label">PWA durumu</div>
+              <div class="value" id="installStateCard">Hazırlanıyor</div>
+            </div>
+            <div class="hero-mini-stat">
+              <div class="label">Açılış deneyimi</div>
+              <div class="value">Splash ekranı + uygulama ikonu</div>
+            </div>
+          </div>
+
+          <div class="feature-pills">
+            <span class="feature-pill">Tek HTML dosya</span>
+            <span class="feature-pill">Daha temiz üst panel</span>
+            <span class="feature-pill">Modal teknik notlar</span>
+            <span class="feature-pill">Hızlı veri yönetimi</span>
+            <span class="feature-pill">PWA kurulum desteği</span>
+            <span class="feature-pill">Splash ekranı</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="sidebar">
+        <div class="glass panel">
+          <h2>Kontrol Merkezi</h2>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <div class="small">Yaklaşan Hatırlatma</div>
+              <div style="margin-top:8px;font-weight:700" id="nextReminderText">Henüz kayıt yok</div>
+            </div>
+            <div class="mini-card">
+              <div class="small">Sesli Komut Örnekleri</div>
+              <div class="footer-note">
+                <span class="kbd">alarm ekle</span>
+                <span class="kbd">randevu ekle</span>
+                <span class="kbd">saat kaç</span>
+                <span class="kbd">alarmı kapat</span>
+              </div>
+            </div>
+            <div class="mini-card">
+              <div class="small">Klavye Kısayolları</div>
+              <div class="footer-note">
+                <span class="kbd">A</span> alarm ekle &nbsp;
+                <span class="kbd">R</span> randevu ekle &nbsp;
+                <span class="kbd">/</span> arama odakla &nbsp;
+                <span class="kbd">Esc</span> pencere kapat
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="content glass panel">
+        <div class="tabs" role="tablist" aria-label="Bölümler">
+          <button class="tab active" data-section="alarms">Alarmlar</button>
+          <button class="tab" data-section="appointments">Randevular</button>
+          <button class="tab" data-section="timer">Sayaç</button>
+          <button class="tab" data-section="worldclock">Dünya Saati</button>
+          <button class="tab" data-section="settings">Ayarlar</button>
+        </div>
+
+        <section class="section active" id="section-alarms">
+          <div class="toolbar">
+            <div class="left">
+              <input id="alarmSearch" class="search" type="text" placeholder="Alarm ara...">
+              <select id="alarmFilter">
+                <option value="all">Tümü</option>
+                <option value="active">Sadece aktif</option>
+                <option value="today">Bugün çalacak</option>
+              </select>
+            </div>
+            <div class="right">
+              <button class="btn-primary" id="btnOpenAlarm2">Yeni Alarm</button>
+            </div>
+          </div>
+          <div id="alarmsList" class="card-list"></div>
+        </section>
+
+        <section class="section" id="section-appointments">
+          <div class="toolbar">
+            <div class="left">
+              <input id="appointmentSearch" class="search" type="text" placeholder="Randevu ara...">
+              <select id="appointmentFilter">
+                <option value="all">Tümü</option>
+                <option value="today">Bugün</option>
+                <option value="upcoming">Yaklaşan</option>
+                <option value="past">Geçmiş</option>
+              </select>
+            </div>
+            <div class="right">
+              <button class="btn-primary" id="btnOpenAppointment2">Yeni Randevu</button>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="glass panel calendar">
+              <div class="calendar-head">
+                <button class="btn-soft tiny" id="prevMonth">←</button>
+                <h3 id="calendarTitle">Takvim</h3>
+                <button class="btn-soft tiny" id="nextMonth">→</button>
+              </div>
+              <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+            <div>
+              <div class="card-list" id="appointmentsList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="section-timer">
+          <div class="grid-2">
+            <div class="glass panel">
+              <h3>Geri Sayım Sayacı</h3>
+              <div class="timer-display mono" id="timerDisplay">00:00</div>
+              <div class="grid-3">
+                <div class="field"><label>Dakika</label><input id="timerMinutes" type="number" min="0" value="25"></div>
+                <div class="field"><label>Saniye</label><input id="timerSeconds" type="number" min="0" max="59" value="0"></div>
+                <div class="field"><label>Hazır Süreler</label>
+                  <select id="timerPreset">
+                    <option value="">Seçin</option>
+                    <option value="1500">Pomodoro 25 dk</option>
+                    <option value="300">Mola 5 dk</option>
+                    <option value="600">Odak 10 dk</option>
+                    <option value="3600">Derin çalışma 60 dk</option>
+                  </select>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn-primary" id="btnStartTimer">Başlat</button>
+                <button class="btn-soft" id="btnPauseTimer">Duraklat</button>
+                <button class="btn-warning" id="btnResetTimer">Sıfırla</button>
+              </div>
+            </div>
+            <div class="glass panel">
+              <h3>Pomodoro Kısayolları</h3>
+              <div class="actions">
+                <button class="btn-success" data-preset="1500">25 dk Çalış</button>
+                <button class="btn-soft" data-preset="300">5 dk Mola</button>
+                <button class="btn-soft" data-preset="900">15 dk Toparlan</button>
+              </div>
+              <div class="footer-note">Sayaç bittiğinde hem ekran bildirimi gösterilir hem de sesli uyarı verilir. Arka plan sekmesi gecikse bile, sayaç kalan süreyi gerçek zamana göre hesaplar.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="section-worldclock">
+          <div class="toolbar">
+            <div class="left">
+              <select id="timezoneSelect"></select>
+            </div>
+            <div class="right">
+              <button class="btn-primary" id="btnAddTimezone">Şehir Ekle</button>
+            </div>
+          </div>
+          <div class="timezones" id="worldClockList"></div>
+        </section>
+
+        <section class="section" id="section-settings">
+          <div class="grid-2">
+            <div class="glass panel">
+              <h3>Genel Ayarlar</h3>
+              <div class="grid-2">
+                <div class="field">
+                  <label>Varsayılan erteleme (dk)</label>
+                  <input id="settingSnooze" type="number" min="1" max="120" value="10">
+                </div>
+                <div class="field">
+                  <label>Alarm sesi</label>
+                  <select id="settingAlarmSound">
+                    <option value="beep">Klasik bip</option>
+                    <option value="chime">Yumuşak zil</option>
+                    <option value="voice">Sesli anons</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field" style="margin-top:12px">
+                <label>Arayüz notu</label>
+                <textarea id="settingNote" placeholder="Kendin için kısa bir not yazabilirsin"></textarea>
+              </div>
+              <div class="actions">
+                <button class="btn-primary" id="btnSaveSettings">Ayarları Kaydet</button>
+              </div>
+            </div>
+            <div class="glass panel">
+              <h3>Arayüz Yardımı</h3>
+              <div class="footer-note"><strong>İpucu:</strong> Üst paneldeki yönetim kartından verileri yedekleyebilir, geri yükleyebilir ve teknik notları tek tıkla açabilirsin. Bu alan daha temiz bir yerleşim için bilgilendirme kartına dönüştürüldü.</div>
+              <div class="mini-grid" style="margin-top:14px">
+                <div class="mini-card">
+                  <div class="small">Önerilen kullanım</div>
+                  <div style="margin-top:8px;font-weight:700">Gün başında bildirim izni ver, akşam veri yedeği al.</div>
+                </div>
+                <div class="mini-card">
+                  <div class="small">Stabil medya tercihi</div>
+                  <div style="margin-top:8px;font-weight:700">Offline kullanım için mp3, wav, mp4 veya webm bağlantıları daha güvenilir çalışır.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </section>
+  </div>
+
+  <div class="modal" id="techNotesModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="techNotesModalTitle">
+      <div class="modal-head">
+        <h2 id="techNotesModalTitle">Teknik Notlar</h2>
+        <button class="close-btn" data-close="techNotesModal" aria-label="Kapat">✕</button>
+      </div>
+      <div class="footer-note" style="font-size:15px;line-height:1.8">
+        Bu sürüm tek HTML dosyası olarak çalışır. Veriler <span class="kbd">localStorage</span> içinde saklanır. Metinler güvenli biçimde işlenir; kullanıcı girdisi ham HTML olarak render edilmez. Alarm tetikleme mantığı yalnızca saniye <em>00</em> eşleşmesine değil, bir sonraki gerçek tetikleme zamanına göre çalışır.
+        <div class="mini-grid" style="margin-top:16px">
+          <div class="mini-card">
+            <div class="small">Mimari</div>
+            <div style="margin-top:8px;font-weight:700">Tek dosyalı yapı, offline embedded stil paketi ve yerel veri saklama yaklaşımı kullanılır.</div>
+          </div>
+          <div class="mini-card">
+            <div class="small">Medya davranışı</div>
+            <div style="margin-top:8px;font-weight:700">YouTube embed kısıtlıysa uygulama sayfa içinde zorlayamaz; bunun yerine güvenli fallback akışı sunar.</div>
+          </div>
+        </div>
+      </div>
+      <div class="actions" style="justify-content:flex-end;margin-top:18px">
+        <button class="btn-soft" data-close="techNotesModal" type="button">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="alarmModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="alarmModalTitle">
+      <div class="modal-head">
+        <h2 id="alarmModalTitle">Yeni Alarm</h2>
+        <button class="close-btn" data-close="alarmModal" aria-label="Kapat">✕</button>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Saat</label><input id="alarmTime" type="time"></div>
+        <div class="field"><label>Etiket</label><input id="alarmLabel" type="text" maxlength="80" placeholder="Örn. Toplantı, Uyan, İlaç"></div>
+      </div>
+      <div class="field" style="margin-top:12px"><label>Tekrar Günleri</label>
+        <div class="days" id="alarmDays"></div>
+      </div>
+      <div class="grid-2" style="margin-top:12px">
+        <div class="field"><label>Erteleme (dk)</label><input id="alarmSnooze" type="number" min="1" max="120" value="10"></div>
+        <div class="field"><label>Aktif</label>
+          <select id="alarmActive"><option value="true">Evet</option><option value="false">Hayır</option></select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label>YouTube URL'leri (isteğe bağlı)</label>
+        <div id="urlRows" class="url-rows"></div>
+        <div class="actions"><button class="btn-soft" id="btnAddUrl" type="button">+ URL Ekle</button></div>
+      </div>
+      <div class="actions" style="justify-content:flex-end">
+        <button class="btn-soft" data-close="alarmModal" type="button">İptal</button>
+        <button class="btn-primary" id="btnSaveAlarm" type="button">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="appointmentModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="appointmentModalTitle">
+      <div class="modal-head">
+        <h2 id="appointmentModalTitle">Yeni Randevu</h2>
+        <button class="close-btn" data-close="appointmentModal" aria-label="Kapat">✕</button>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Başlık</label><input id="appointmentTitle" type="text" maxlength="100"></div>
+        <div class="field"><label>Konum</label><input id="appointmentLocation" type="text" maxlength="120" placeholder="İsteğe bağlı"></div>
+      </div>
+      <div class="grid-2" style="margin-top:12px">
+        <div class="field"><label>Tarih</label><input id="appointmentDate" type="date"></div>
+        <div class="field"><label>Saat</label><input id="appointmentTime" type="time"></div>
+      </div>
+      <div class="grid-2" style="margin-top:12px">
+        <div class="field"><label>Hatırlatma</label>
+          <select id="appointmentReminder">
+            <option value="0">Tam saatinde</option>
+            <option value="5">5 dk önce</option>
+            <option value="15">15 dk önce</option>
+            <option value="30">30 dk önce</option>
+            <option value="60">1 saat önce</option>
+            <option value="1440">1 gün önce</option>
+          </select>
+        </div>
+        <div class="field"><label>Durum</label>
+          <select id="appointmentStatus">
+            <option value="planned">Planlandı</option>
+            <option value="confirmed">Onaylı</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-top:12px"><label>Not</label><textarea id="appointmentNotes" maxlength="300"></textarea></div>
+      <div class="actions" style="justify-content:flex-end">
+        <button class="btn-soft" data-close="appointmentModal" type="button">İptal</button>
+        <button class="btn-primary" id="btnSaveAppointment" type="button">Kaydet</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="alarmOverlay" aria-hidden="true">
+    <div class="alarm-overlay-card">
+      <div class="pulse" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M6.7 6.7a7.5 7.5 0 0 1 10.6 0"/><path d="M5 18h14"/><path d="M9 18a3 3 0 0 0 6 0"/><path d="M18.4 16H5.6c-.4 0-.7-.4-.6-.8l.8-3a7 7 0 1 1 12.4 0l.8 3c.1.4-.2.8-.6.8Z"/></svg>
+      </div>
+      <p class="overlay-title" id="overlayAlarmLabel">Alarm</p>
+      <p class="overlay-sub" id="overlayAlarmMeta">Saat geldi</p>
+      <div id="overlayYoutubeWrap" style="display:none">
+        <div id="overlayMediaMount" class="media-shell"></div>
+        <div class="overlay-actions">
+          <button class="btn-soft" id="btnNextVideo">Sonraki Kaynak</button>
+          <button class="btn-soft" id="btnOpenVideo">Bağlantıyı Aç</button>
+        </div>
+      </div>
+      <div class="overlay-actions">
+        <button class="btn-warning" id="btnSnooze">Ertele</button>
+        <button class="btn-primary" id="btnDismissAlarm">Kapat</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const STORAGE_KEYS = {
+        alarms: 'ai_sekreter_v6_alarms',
+        appointments: 'ai_sekreter_v6_appointments',
+        settings: 'ai_sekreter_v6_settings',
+        timezones: 'ai_sekreter_v6_timezones',
+      };
+
+      const dayLabels = ['Paz', 'Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt'];
+      const fullDayLabels = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+      const monthFormatter = new Intl.DateTimeFormat('tr-TR', { month: 'long', year: 'numeric' });
+      const longDateFormatter = new Intl.DateTimeFormat('tr-TR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+      const els = {};
+      const state = {
+        alarms: [],
+        appointments: [],
+        settings: { defaultSnooze: 10, alarmSound: 'beep', note: '' },
+        timer: { endAt: null, remainingMs: 0, running: false },
+        recognition: null,
+        calendarDate: new Date(),
+        selectedCalendarDate: null,
+        editingAlarmId: null,
+        editingAppointmentId: null,
+        selectedDays: [1,2,3,4,5],
+        worldClocks: [
+          'Europe/Istanbul', 'Europe/London', 'America/New_York', 'Asia/Tokyo'
+        ],
+        activeAlarmInstance: null,
+        playerIndex: 0,
+        playerUrls: [],
+        wakeLock: null,
+        searchFocusTarget: 'alarmSearch'
+      };
+
+      const timezoneOptions = [
+        ['Europe/Istanbul', 'İstanbul'], ['Europe/London', 'Londra'], ['Europe/Berlin', 'Berlin'],
+        ['America/New_York', 'New York'], ['America/Los_Angeles', 'Los Angeles'], ['Asia/Tokyo', 'Tokyo'],
+        ['Asia/Dubai', 'Dubai'], ['Asia/Baku', 'Bakü'], ['Australia/Sydney', 'Sydney'], ['Asia/Singapore', 'Singapur']
+      ];
+
+      function $(id){ return document.getElementById(id); }
+      function uid(prefix='id'){ return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`; }
+      function safeText(value){ return String(value ?? '').replace(/[\u0000-\u001F\u007F]/g,'').trim(); }
+      function pad(n){ return String(n).padStart(2,'0'); }
+      function minutesFromHHMM(hhmm){ const [h,m] = String(hhmm).split(':').map(Number); return (h * 60) + m; }
+      function hhmmFromDate(date){ return `${pad(date.getHours())}:${pad(date.getMinutes())}`; }
+      function dateInputValue(date){ return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`; }
+      function formatDateTime(date){ return `${longDateFormatter.format(date)} ${pad(date.getHours())}:${pad(date.getMinutes())}`; }
+      function isSameDay(a,b){ return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+      function startOfDay(date){ return new Date(date.getFullYear(), date.getMonth(), date.getDate()); }
+      function addDays(date, days){ const d = new Date(date); d.setDate(d.getDate()+days); return d; }
+      function escapeUrl(url){ try { return new URL(url).toString(); } catch { return ''; } }
+
+      function loadJSON(key, fallback){
+        try {
+          const raw = localStorage.getItem(key);
+          if(!raw) return fallback;
+          const parsed = JSON.parse(raw);
+          return parsed ?? fallback;
+        } catch {
+          return fallback;
+        }
+      }
+      function saveJSON(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+
+      function normalizeAlarm(alarm){
+        const days = Array.isArray(alarm.days) && alarm.days.length ? [...new Set(alarm.days.map(Number).filter(n => n >= 0 && n <= 6))].sort((a,b)=>a-b) : [0,1,2,3,4,5,6];
+        const urls = Array.isArray(alarm.urls) ? alarm.urls.map(safeText).filter(Boolean) : [];
+        return {
+          id: alarm.id || uid('alarm'),
+          time: /^\d{2}:\d{2}$/.test(alarm.time) ? alarm.time : '09:00',
+          label: safeText(alarm.label) || 'Yeni Alarm',
+          days,
+          snoozeMinutes: Number(alarm.snoozeMinutes || state.settings.defaultSnooze || 10),
+          active: alarm.active !== false,
+          urls,
+          lastTriggeredAt: alarm.lastTriggeredAt || null,
+          createdAt: alarm.createdAt || new Date().toISOString(),
+          updatedAt: alarm.updatedAt || new Date().toISOString(),
+        };
+      }
+
+      function normalizeAppointment(app){
+        const title = safeText(app.title) || 'Randevu';
+        const date = /^\d{4}-\d{2}-\d{2}$/.test(app.date) ? app.date : dateInputValue(new Date());
+        const time = /^\d{2}:\d{2}$/.test(app.time) ? app.time : '09:00';
+        return {
+          id: app.id || uid('app'),
+          title,
+          location: safeText(app.location),
+          date,
+          time,
+          reminder: Number.isFinite(Number(app.reminder)) ? Number(app.reminder) : 15,
+          status: ['planned','confirmed'].includes(app.status) ? app.status : 'planned',
+          notes: safeText(app.notes).slice(0,300),
+          notified: Boolean(app.notified),
+          createdAt: app.createdAt || new Date().toISOString(),
+          updatedAt: app.updatedAt || new Date().toISOString(),
+        };
+      }
+
+      function nextOccurrenceForAlarm(alarm, now = new Date()){
+        if(!alarm.active) return null;
+        const [hour, minute] = alarm.time.split(':').map(Number);
+        for(let offset = 0; offset < 8; offset++){
+          const candidate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset, hour, minute, 0, 0);
+          if(alarm.days.includes(candidate.getDay()) && candidate.getTime() >= now.getTime() - 59000){
+            return candidate;
+          }
+        }
+        return null;
+      }
+
+      function previousOccurrenceForAlarm(alarm, now = new Date()){
+        const [hour, minute] = alarm.time.split(':').map(Number);
+        for(let offset = 0; offset < 8; offset++){
+          const candidate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - offset, hour, minute, 0, 0);
+          if(alarm.days.includes(candidate.getDay()) && candidate.getTime() <= now.getTime()) return candidate;
+        }
+        return null;
+      }
+
+      function humanizeDiff(ms){
+        if(ms <= 0) return 'şimdi';
+        const totalMin = Math.round(ms / 60000);
+        const days = Math.floor(totalMin / 1440);
+        const hours = Math.floor((totalMin % 1440) / 60);
+        const mins = totalMin % 60;
+        const chunks = [];
+        if(days) chunks.push(`${days}g`);
+        if(hours) chunks.push(`${hours}s`);
+        if(mins || !chunks.length) chunks.push(`${mins}dk`);
+        return chunks.join(' ');
+      }
+
+      function showToast(message, type='info'){
+        const wrap = els.toastWrap;
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        wrap.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(8px)'; }, 3200);
+        setTimeout(() => toast.remove(), 3800);
+      }
+
+      function updatePermissionBadges(){
+        const permission = 'Notification' in window ? Notification.permission : 'unsupported';
+        const notifLabel = permission === 'granted' ? 'Bildirim: açık' : permission === 'denied' ? 'Bildirim: engelli' : permission === 'default' ? 'Bildirim: bekliyor' : 'Bildirim: destek yok';
+        els.notifState.textContent = notifLabel;
+        els.voiceState.textContent = (window.SpeechRecognition || window.webkitSpeechRecognition) ? 'Ses: destekleniyor' : 'Ses: destek yok';
+      }
+
+      async function requestNotifications(){
+        if(!('Notification' in window)){
+          showToast('Bu tarayıcı bildirim API desteği vermiyor.', 'error');
+          return;
+        }
+        try {
+          const result = await Notification.requestPermission();
+          updatePermissionBadges();
+          showToast(result === 'granted' ? 'Bildirim izni verildi.' : 'Bildirim izni verilmedi.', result === 'granted' ? 'success' : 'info');
+        } catch {
+          showToast('Bildirim izni alınamadı.', 'error');
+        }
+      }
+
+      function notify(title, body){
+        if('Notification' in window && Notification.permission === 'granted'){
+          new Notification(title, { body });
+        }
+      }
+
+      function speak(text){
+        if(!('speechSynthesis' in window)) return;
+        try {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'tr-TR';
+          u.rate = .98;
+          window.speechSynthesis.speak(u);
+        } catch {}
+      }
+
+      function playAlarmTone(){
+        if(state.settings.alarmSound === 'voice') speak(`${state.activeAlarmInstance?.alarm?.label || 'Alarm'} zamanı geldi.`);
+        else playTone(state.settings.alarmSound || 'beep');
+      }
+
+      async function requestWakeLock(){
+        try {
+          if('wakeLock' in navigator && !state.wakeLock){
+            state.wakeLock = await navigator.wakeLock.request('screen');
+            state.wakeLock.addEventListener?.('release', () => { state.wakeLock = null; });
+          }
+        } catch {}
+      }
+
+      async function releaseWakeLock(){
+        try { await state.wakeLock?.release(); } catch {}
+        state.wakeLock = null;
+      }
+
+      function isDirectMediaUrl(url){
+        return /\.(mp3|wav|ogg|m4a|mp4|webm|mov)(\?|#|$)/i.test(String(url || ''));
+      }
+
+      function openExternalUrl(url){
+        try { window.open(url, '_blank', 'noopener,noreferrer'); } catch {}
+      }
+
+      function youtubeThumbnail(url){
+        const id = extractYoutubeId(url);
+        if(!id) return '';
+        const label = encodeURIComponent(`YouTube\n${id.slice(0,6)}...`);
+        return `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720"><defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="%230b1020"/><stop offset="1" stop-color="%23111936"/></linearGradient></defs><rect width="1280" height="720" fill="url(%23g)"/><rect x="440" y="240" rx="34" ry="34" width="400" height="240" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.16)"/><polygon points="585,290 585,430 720,360" fill="%236ee7ff"/><text x="640" y="520" fill="%23eef3ff" font-size="40" font-family="Arial, sans-serif" text-anchor="middle">Offline Önizleme</text><text x="640" y="575" fill="%239fb0d8" font-size="28" font-family="Arial, sans-serif" text-anchor="middle">${label}</text></svg>`;
+      }
+
+      function renderMediaFallback(raw, message){
+        const mount = $('overlayMediaMount');
+        mount.innerHTML = '';
+        const box = document.createElement('div');
+        box.className = 'media-fallback';
+        const thumb = youtubeThumbnail(raw);
+        if(thumb){
+          const img = document.createElement('img');
+          img.className = 'thumb';
+          img.alt = 'Video önizleme';
+          img.src = thumb;
+          box.appendChild(img);
+        }
+        const p = document.createElement('p');
+        p.className = 'small';
+        p.style.marginTop = '12px';
+        p.textContent = message || 'İçerik uygulama içinde açılamadı. Offline sürüm harici kütüphane kullanmaz; YouTube bağlantıları internet gerektirir ve gerekirse dış bağlantı olarak açılabilir.';
+        box.appendChild(p);
+        mount.appendChild(box);
+      }
+
+      function renderDirectMedia(raw){
+        const mount = $('overlayMediaMount');
+        mount.innerHTML = '';
+        const isAudio = /\.(mp3|wav|ogg|m4a)(\?|#|$)/i.test(String(raw || ''));
+        const media = document.createElement(isAudio ? 'audio' : 'video');
+        media.className = 'media-native';
+        media.controls = true;
+        media.autoplay = true;
+        media.playsInline = true;
+        media.src = raw;
+        media.addEventListener('error', () => renderMediaFallback(raw, 'Medya kaynağı yüklenemedi.'));
+        mount.appendChild(media);
+      }
+
+      function buildTriggerKey(alarm, dt){
+        return `${alarm.id}_${dt.getFullYear()}-${pad(dt.getMonth()+1)}-${pad(dt.getDate())}_${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+      }
+
+      function playTone(kind='beep'){
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if(!AudioContextClass) return;
+        const ctx = new AudioContextClass();
+        const now = ctx.currentTime;
+        const pattern = kind === 'chime'
+          ? [523.25,659.25,783.99]
+          : kind === 'voice'
+          ? [440,440,392]
+          : [880,660,880];
+        pattern.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+          osc.frequency.value = freq;
+          gain.gain.setValueAtTime(0.0001, now + i * .18);
+          gain.gain.exponentialRampToValueAtTime(0.2, now + i * .18 + .01);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + i * .18 + .16);
+          osc.connect(gain).connect(ctx.destination);
+          osc.start(now + i * .18);
+          osc.stop(now + i * .18 + .18);
+        });
+      }
+
+      function renderTabs(){
+        document.querySelectorAll('.tab').forEach(tab => {
+          tab.addEventListener('click', () => activateSection(tab.dataset.section));
+        });
+      }
+      function activateSection(section){
+        document.querySelectorAll('.tab').forEach(tab => tab.classList.toggle('active', tab.dataset.section === section));
+        document.querySelectorAll('.section').forEach(sec => sec.classList.toggle('active', sec.id === `section-${section}`));
+        if(section === 'appointments') renderCalendar();
+      }
+
+      function buildDayButtons(){
+        els.alarmDays.innerHTML = '';
+        dayLabels.forEach((label, index) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'day';
+          btn.textContent = label;
+          btn.dataset.day = index;
+          btn.addEventListener('click', () => {
+            const d = Number(btn.dataset.day);
+            if(state.selectedDays.includes(d)){
+              state.selectedDays = state.selectedDays.filter(x => x !== d);
+            } else {
+              state.selectedDays = [...state.selectedDays, d].sort((a,b)=>a-b);
+            }
+            syncDayButtons();
+          });
+          els.alarmDays.appendChild(btn);
+        });
+        syncDayButtons();
+      }
+      function syncDayButtons(){
+        [...els.alarmDays.children].forEach(btn => {
+          btn.classList.toggle('active', state.selectedDays.includes(Number(btn.dataset.day)));
+        });
+      }
+
+      function addUrlRow(value=''){
+        const row = document.createElement('div');
+        row.className = 'url-row';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'wide';
+        input.placeholder = 'https://www.youtube.com/watch?v=...';
+        input.value = value;
+        const up = document.createElement('button'); up.type='button'; up.className='btn-soft tiny'; up.textContent='↑';
+        const down = document.createElement('button'); down.type='button'; down.className='btn-soft tiny'; down.textContent='↓';
+        const del = document.createElement('button'); del.type='button'; del.className='btn-danger tiny'; del.textContent='Sil';
+        up.addEventListener('click', () => { if(row.previousElementSibling) els.urlRows.insertBefore(row, row.previousElementSibling); });
+        down.addEventListener('click', () => { if(row.nextElementSibling) els.urlRows.insertBefore(row.nextElementSibling, row); });
+        del.addEventListener('click', () => { row.remove(); if(!els.urlRows.children.length) addUrlRow(); });
+        row.append(input, up, down, del);
+        els.urlRows.appendChild(row);
+      }
+
+      function openModal(id){ $(id).classList.add('show'); $(id).setAttribute('aria-hidden', 'false'); }
+      function closeModal(id){ $(id).classList.remove('show'); $(id).setAttribute('aria-hidden', 'true'); }
+
+      function resetAlarmForm(){
+        state.editingAlarmId = null;
+        $('alarmModalTitle').textContent = 'Yeni Alarm';
+        $('alarmTime').value = '07:30';
+        $('alarmLabel').value = '';
+        $('alarmSnooze').value = state.settings.defaultSnooze || 10;
+        $('alarmActive').value = 'true';
+        state.selectedDays = [1,2,3,4,5];
+        syncDayButtons();
+        els.urlRows.innerHTML = '';
+        addUrlRow();
+        openModal('alarmModal');
+      }
+
+      function editAlarm(id){
+        const alarm = state.alarms.find(a => a.id === id);
+        if(!alarm) return;
+        state.editingAlarmId = id;
+        $('alarmModalTitle').textContent = 'Alarmı Düzenle';
+        $('alarmTime').value = alarm.time;
+        $('alarmLabel').value = alarm.label;
+        $('alarmSnooze').value = alarm.snoozeMinutes;
+        $('alarmActive').value = String(alarm.active);
+        state.selectedDays = [...alarm.days].sort((a,b)=>a-b);
+        syncDayButtons();
+        els.urlRows.innerHTML = '';
+        if(alarm.urls.length){ alarm.urls.forEach(addUrlRow); } else { addUrlRow(); }
+        openModal('alarmModal');
+      }
+
+      function gatherUrlRows(){
+        return [...els.urlRows.querySelectorAll('input')]
+          .map(input => safeText(input.value))
+          .filter(Boolean)
+          .map(escapeUrl)
+          .filter(Boolean);
+      }
+
+      function saveAlarm(){
+        const time = $('alarmTime').value;
+        const label = safeText($('alarmLabel').value).slice(0,80);
+        const snoozeMinutes = Math.max(1, Math.min(120, Number($('alarmSnooze').value || state.settings.defaultSnooze || 10)));
+        const active = $('alarmActive').value === 'true';
+        const days = state.selectedDays.length ? [...state.selectedDays] : [0,1,2,3,4,5,6];
+        const urls = gatherUrlRows();
+
+        if(!time){ showToast('Lütfen saat seçin.', 'error'); return; }
+        if(!label){ showToast('Lütfen alarm etiketi girin.', 'error'); return; }
+
+        const payload = normalizeAlarm({
+          id: state.editingAlarmId || undefined,
+          time, label, days, snoozeMinutes, active, urls,
+          createdAt: state.editingAlarmId ? (state.alarms.find(a => a.id === state.editingAlarmId)?.createdAt) : new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lastTriggeredAt: state.editingAlarmId ? state.alarms.find(a => a.id === state.editingAlarmId)?.lastTriggeredAt || null : null,
+        });
+
+        if(state.editingAlarmId){
+          state.alarms = state.alarms.map(a => a.id === state.editingAlarmId ? payload : a);
+          showToast('Alarm güncellendi.', 'success');
+        } else {
+          state.alarms.unshift(payload);
+          showToast('Yeni alarm kaydedildi.', 'success');
+        }
+        saveJSON(STORAGE_KEYS.alarms, state.alarms);
+        closeModal('alarmModal');
+        renderAlarms();
+        updateStats();
+      }
+
+      function toggleAlarm(id){
+        state.alarms = state.alarms.map(alarm => alarm.id === id ? { ...alarm, active: !alarm.active, updatedAt: new Date().toISOString() } : alarm);
+        saveJSON(STORAGE_KEYS.alarms, state.alarms);
+        renderAlarms();
+        updateStats();
+      }
+
+      function deleteAlarm(id){
+        const alarm = state.alarms.find(a => a.id === id);
+        if(!alarm) return;
+        if(!confirm(`"${alarm.label}" alarmı silinsin mi?`)) return;
+        state.alarms = state.alarms.filter(a => a.id !== id);
+        saveJSON(STORAGE_KEYS.alarms, state.alarms);
+        renderAlarms();
+        updateStats();
+        showToast('Alarm silindi.', 'info');
+      }
+
+      function renderAlarms(){
+        const list = els.alarmsList;
+        list.innerHTML = '';
+        const query = safeText($('alarmSearch').value).toLocaleLowerCase('tr-TR');
+        const filter = $('alarmFilter').value;
+        const now = new Date();
+
+        const rows = state.alarms
+          .map(alarm => ({ alarm, next: nextOccurrenceForAlarm(alarm, now), prev: previousOccurrenceForAlarm(alarm, now) }))
+          .filter(({ alarm, next }) => {
+            if(query && !alarm.label.toLocaleLowerCase('tr-TR').includes(query)) return false;
+            if(filter === 'active' && !alarm.active) return false;
+            if(filter === 'today' && !(next && isSameDay(next, now))) return false;
+            return true;
+          })
+          .sort((a,b) => {
+            const ax = a.next ? a.next.getTime() : Number.MAX_SAFE_INTEGER;
+            const bx = b.next ? b.next.getTime() : Number.MAX_SAFE_INTEGER;
+            return ax - bx;
+          });
+
+        if(!rows.length){
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = 'Gösterilecek alarm bulunamadı.';
+          list.appendChild(empty);
+          return;
+        }
+
+        rows.forEach(({ alarm, next, prev }) => {
+          const item = document.createElement('article');
+          item.className = `item${!alarm.active ? ' disabled' : ''}${alarm.active && !next && prev ? ' expired' : ''}`;
+          const main = document.createElement('div');
+          main.className = 'item-main';
+          const icon = document.createElement('div');
+          icon.className = 'round-icon';
+          icon.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6.7 6.7a7.5 7.5 0 0 1 10.6 0"/><path d="M5 18h14"/><path d="M9 18a3 3 0 0 0 6 0"/><path d="M18.4 16H5.6c-.4 0-.7-.4-.6-.8l.8-3a7 7 0 1 1 12.4 0l.8 3c.1.4-.2.8-.6.8Z"/></svg>';
+          const textWrap = document.createElement('div');
+          const title = document.createElement('h4');
+          title.textContent = `${alarm.time} • ${alarm.label}`;
+          const meta = document.createElement('div');
+          meta.className = 'meta';
+          const nextText = next ? `Sonraki: ${formatDateTime(next)}` : (alarm.active ? 'Yaklaşan zaman hesaplanamadı' : 'Pasif alarm');
+          const remainingText = next ? `${humanizeDiff(next.getTime() - Date.now())} sonra` : (prev ? 'Bu tekrar döngüsü geçti' : 'Beklemede');
+          const daysText = alarm.days.length === 7 ? 'Her gün' : alarm.days.map(d => fullDayLabels[d]).join(', ');
+          [nextText, remainingText, daysText].forEach(part => {
+            const span = document.createElement('span');
+            span.textContent = part;
+            meta.appendChild(span);
+          });
+          const pills = document.createElement('div');
+          pills.className = 'pills';
+          [['Ertele', `${alarm.snoozeMinutes} dk`], ['Video', alarm.urls.length ? `${alarm.urls.length} URL` : 'Yok']].forEach(([k,v]) => {
+            const pill = document.createElement('span');
+            pill.className = 'pill';
+            pill.textContent = `${k}: ${v}`;
+            pills.appendChild(pill);
+          });
+          textWrap.append(title, meta, pills);
+          main.append(icon, textWrap);
+
+          const side = document.createElement('div');
+          side.className = 'item-side';
+          const editBtn = document.createElement('button'); editBtn.className = 'btn-soft tiny'; editBtn.textContent = 'Düzenle'; editBtn.addEventListener('click', () => editAlarm(alarm.id));
+          const resBtn = document.createElement('button'); resBtn.className = 'btn-warning tiny'; resBtn.textContent = '1 Saat Ertele'; resBtn.addEventListener('click', () => quickRescheduleAlarm(alarm.id, 60));
+          const delBtn = document.createElement('button'); delBtn.className = 'btn-danger tiny'; delBtn.textContent = 'Sil'; delBtn.addEventListener('click', () => deleteAlarm(alarm.id));
+          const sw = document.createElement('button'); sw.type='button'; sw.className = `switch ${alarm.active ? 'on' : ''}`; sw.innerHTML = '<span></span>'; sw.setAttribute('aria-label', 'Alarmı aç kapa'); sw.addEventListener('click', () => toggleAlarm(alarm.id));
+          side.append(editBtn, resBtn, delBtn, sw);
+
+          item.append(main, side);
+          list.appendChild(item);
+        });
+      }
+
+      function quickRescheduleAlarm(id, minutes){
+        state.alarms = state.alarms.map(alarm => {
+          if(alarm.id !== id) return alarm;
+          const target = new Date(Date.now() + minutes * 60000);
+          return normalizeAlarm({ ...alarm, time: hhmmFromDate(target), days: [target.getDay()], active: true, updatedAt: new Date().toISOString() });
+        });
+        saveJSON(STORAGE_KEYS.alarms, state.alarms);
+        renderAlarms();
+        updateStats();
+        showToast(`Alarm ${minutes} dakika sonrasına planlandı.`, 'success');
+      }
+
+      function resetAppointmentForm(){
+        state.editingAppointmentId = null;
+        $('appointmentModalTitle').textContent = 'Yeni Randevu';
+        $('appointmentTitle').value = '';
+        $('appointmentLocation').value = '';
+        $('appointmentDate').value = dateInputValue(new Date());
+        $('appointmentTime').value = '09:00';
+        $('appointmentReminder').value = '15';
+        $('appointmentStatus').value = 'planned';
+        $('appointmentNotes').value = '';
+        openModal('appointmentModal');
+      }
+
+      function editAppointment(id){
+        const app = state.appointments.find(a => a.id === id);
+        if(!app) return;
+        state.editingAppointmentId = id;
+        $('appointmentModalTitle').textContent = 'Randevuyu Düzenle';
+        $('appointmentTitle').value = app.title;
+        $('appointmentLocation').value = app.location || '';
+        $('appointmentDate').value = app.date;
+        $('appointmentTime').value = app.time;
+        $('appointmentReminder').value = String(app.reminder);
+        $('appointmentStatus').value = app.status;
+        $('appointmentNotes').value = app.notes || '';
+        openModal('appointmentModal');
+      }
+
+      function saveAppointment(){
+        const title = safeText($('appointmentTitle').value).slice(0,100);
+        const location = safeText($('appointmentLocation').value).slice(0,120);
+        const date = $('appointmentDate').value;
+        const time = $('appointmentTime').value;
+        const reminder = Number($('appointmentReminder').value || 0);
+        const status = $('appointmentStatus').value;
+        const notes = safeText($('appointmentNotes').value).slice(0,300);
+        if(!title || !date || !time){ showToast('Başlık, tarih ve saat zorunludur.', 'error'); return; }
+
+        const payload = normalizeAppointment({
+          id: state.editingAppointmentId || undefined,
+          title, location, date, time, reminder, status, notes,
+          notified: false,
+          createdAt: state.editingAppointmentId ? state.appointments.find(a => a.id === state.editingAppointmentId)?.createdAt : new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        });
+
+        if(state.editingAppointmentId){
+          state.appointments = state.appointments.map(a => a.id === state.editingAppointmentId ? payload : a);
+          showToast('Randevu güncellendi.', 'success');
+        } else {
+          state.appointments.unshift(payload);
+          showToast('Randevu kaydedildi.', 'success');
+        }
+        saveJSON(STORAGE_KEYS.appointments, state.appointments);
+        closeModal('appointmentModal');
+        renderAppointments();
+        renderCalendar();
+        updateStats();
+      }
+
+      function deleteAppointment(id){
+        const app = state.appointments.find(a => a.id === id);
+        if(!app) return;
+        if(!confirm(`"${app.title}" randevusu silinsin mi?`)) return;
+        state.appointments = state.appointments.filter(a => a.id !== id);
+        saveJSON(STORAGE_KEYS.appointments, state.appointments);
+        renderAppointments();
+        renderCalendar();
+        updateStats();
+      }
+
+      function appointmentDateTime(app){ return new Date(`${app.date}T${app.time}:00`); }
+
+      function renderAppointments(){
+        const list = els.appointmentsList;
+        list.innerHTML = '';
+        const query = safeText($('appointmentSearch').value).toLocaleLowerCase('tr-TR');
+        const filter = $('appointmentFilter').value;
+        const selectedDate = state.selectedCalendarDate ? dateInputValue(state.selectedCalendarDate) : null;
+        const now = new Date();
+        const rows = state.appointments
+          .map(app => ({ app, dt: appointmentDateTime(app) }))
+          .filter(({ app, dt }) => {
+            if(query && !(app.title.toLocaleLowerCase('tr-TR').includes(query) || app.location.toLocaleLowerCase('tr-TR').includes(query))) return false;
+            if(selectedDate && app.date !== selectedDate) return false;
+            if(filter === 'today' && app.date !== dateInputValue(now)) return false;
+            if(filter === 'upcoming' && dt < now) return false;
+            if(filter === 'past' && dt >= now) return false;
+            return true;
+          })
+          .sort((a,b) => a.dt - b.dt);
+
+        if(!rows.length){
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.textContent = selectedDate ? 'Seçilen gün için randevu yok.' : 'Gösterilecek randevu bulunamadı.';
+          list.appendChild(empty);
+          return;
+        }
+
+        rows.forEach(({ app, dt }) => {
+          const item = document.createElement('article');
+          item.className = `item${dt < now ? ' disabled' : ''}`;
+          const main = document.createElement('div');
+          main.className = 'item-main';
+          const icon = document.createElement('div');
+          icon.className = 'round-icon';
+          icon.innerHTML = '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M3 11h18"/></svg>';
+          const textWrap = document.createElement('div');
+          const title = document.createElement('h4'); title.textContent = app.title;
+          const meta = document.createElement('div'); meta.className='meta';
+          [`${app.date} ${app.time}`, app.location || 'Konum yok', app.status === 'confirmed' ? 'Onaylı' : 'Planlandı'].forEach(part => {
+            const span = document.createElement('span'); span.textContent = part; meta.appendChild(span);
+          });
+          const notes = document.createElement('div'); notes.className='footer-note'; notes.textContent = app.notes || 'Not yok.';
+          textWrap.append(title, meta, notes);
+          main.append(icon, textWrap);
+
+          const side = document.createElement('div'); side.className='item-side';
+          const rem = document.createElement('span'); rem.className='pill'; rem.textContent = `${app.reminder} dk önce hatırlat`;
+          const editBtn = document.createElement('button'); editBtn.className='btn-soft tiny'; editBtn.textContent='Düzenle'; editBtn.addEventListener('click', () => editAppointment(app.id));
+          const delBtn = document.createElement('button'); delBtn.className='btn-danger tiny'; delBtn.textContent='Sil'; delBtn.addEventListener('click', () => deleteAppointment(app.id));
+          side.append(rem, editBtn, delBtn);
+          item.append(main, side);
+          list.appendChild(item);
+        });
+      }
+
+      function renderCalendar(){
+        const grid = els.calendarGrid;
+        grid.innerHTML = '';
+        const now = new Date();
+        $('calendarTitle').textContent = monthFormatter.format(state.calendarDate);
+        ['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'].forEach(d => {
+          const el = document.createElement('div');
+          el.className = 'dow';
+          el.textContent = d;
+          grid.appendChild(el);
+        });
+        const monthStart = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth(), 1);
+        const monthEnd = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth()+1, 0);
+        const startOffset = (monthStart.getDay() + 6) % 7;
+        const total = 42;
+        const firstCellDate = addDays(monthStart, -startOffset);
+        for(let i=0;i<total;i++){
+          const cellDate = addDays(firstCellDate, i);
+          const btn = document.createElement('button');
+          btn.type='button';
+          btn.className = 'day-cell';
+          if(cellDate.getMonth() !== state.calendarDate.getMonth()) btn.classList.add('out');
+          if(isSameDay(cellDate, now)) btn.classList.add('today');
+          if(state.selectedCalendarDate && isSameDay(cellDate, state.selectedCalendarDate)) btn.classList.add('selected');
+          btn.innerHTML = `<div>${cellDate.getDate()}</div>`;
+          const hasApp = state.appointments.some(a => a.date === dateInputValue(cellDate));
+          if(hasApp){
+            const dot = document.createElement('div'); dot.className='dot'; btn.appendChild(dot);
+          }
+          btn.addEventListener('click', () => { state.selectedCalendarDate = cellDate; renderCalendar(); renderAppointments(); });
+          grid.appendChild(btn);
+        }
+      }
+
+      function renderWorldClocks(){
+        const wrap = els.worldClockList;
+        wrap.innerHTML = '';
+        state.worldClocks.forEach(tz => {
+          const row = document.createElement('div');
+          row.className = 'tz-row';
+          const left = document.createElement('div');
+          const pretty = timezoneOptions.find(([id]) => id === tz)?.[1] || tz.split('/').pop().replaceAll('_',' ');
+          left.innerHTML = `<div style="font-weight:700">${pretty}</div><div class="small">${tz}</div>`;
+          const right = document.createElement('div');
+          right.style.display='flex'; right.style.alignItems='center'; right.style.gap='10px';
+          const time = document.createElement('div');
+          time.className='mono';
+          const nowText = new Intl.DateTimeFormat('tr-TR',{ hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:tz }).format(new Date());
+          time.textContent = nowText;
+          const del = document.createElement('button'); del.className='btn-danger tiny'; del.textContent='Sil'; del.addEventListener('click', () => {
+            state.worldClocks = state.worldClocks.filter(x => x !== tz);
+            saveJSON(STORAGE_KEYS.timezones, state.worldClocks);
+            renderWorldClocks();
+          });
+          right.append(time, del);
+          row.append(left, right);
+          wrap.appendChild(row);
+        });
+      }
+
+      function updateLiveClock(){
+        const now = new Date();
+        $('liveClock').textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        $('liveDate').textContent = longDateFormatter.format(now);
+        renderWorldClocks();
+      }
+
+      function updateStats(){
+        const now = new Date();
+        const activeAlarms = state.alarms.filter(a => a.active).length;
+        const todayApps = state.appointments.filter(a => a.date === dateInputValue(now)).length;
+        const nextAlarm = state.alarms
+          .map(a => ({ alarm:a, next: nextOccurrenceForAlarm(a, now) }))
+          .filter(x => x.next)
+          .sort((a,b) => a.next - b.next)[0];
+        $('statActiveAlarms').textContent = String(activeAlarms);
+        $('statTodayAppointments').textContent = String(todayApps);
+        $('statNextAlarm').textContent = nextAlarm ? `${nextAlarm.alarm.label} • ${humanizeDiff(nextAlarm.next.getTime()-now.getTime())}` : 'Yok';
+        $('statTimerState').textContent = formatTimerText();
+        $('nextReminderText').textContent = nextAlarm ? `${nextAlarm.alarm.label} (${formatDateTime(nextAlarm.next)})` : 'Yaklaşan alarm yok';
+      }
+
+      function checkAppointments(){
+        const now = new Date();
+        let changed = false;
+        state.appointments = state.appointments.map(app => {
+          const dt = appointmentDateTime(app);
+          const notifyAt = new Date(dt.getTime() - (app.reminder * 60000));
+          if(!app.notified && now >= notifyAt && now < dt){
+            notify('Randevu Hatırlatma', `${app.title} • ${app.time}`);
+            speak(`${app.title} için randevu yaklaşıyor.`);
+            showToast(`Randevu yaklaşıyor: ${app.title}`, 'info');
+            changed = true;
+            return { ...app, notified: true, updatedAt: new Date().toISOString() };
+          }
+          return app;
+        });
+        if(changed){ saveJSON(STORAGE_KEYS.appointments, state.appointments); renderAppointments(); }
+      }
+
+      function extractYoutubeId(url){
+        try {
+          const u = new URL(url);
+          if(u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+          if(u.searchParams.get('v')) return u.searchParams.get('v');
+          const parts = u.pathname.split('/').filter(Boolean);
+          const embedIdx = parts.indexOf('embed');
+          const shortsIdx = parts.indexOf('shorts');
+          if(embedIdx !== -1 && parts[embedIdx+1]) return parts[embedIdx+1];
+          if(shortsIdx !== -1 && parts[shortsIdx+1]) return parts[shortsIdx+1];
+        } catch {}
+        return null;
+      }
+
+      function openAlarmOverlay(instance){
+        state.activeAlarmInstance = instance;
+        state.playerUrls = instance.alarm.urls || [];
+        state.playerIndex = 0;
+        $('overlayAlarmLabel').textContent = instance.alarm.label;
+        $('overlayAlarmMeta').textContent = `${instance.alarm.time} • ${fullDayLabels[instance.triggerAt.getDay()]}${instance.missed ? ' • Gecikmeli tetiklendi' : ''}`;
+        $('overlayYoutubeWrap').style.display = state.playerUrls.length ? '' : 'none';
+        if(state.playerUrls.length) loadOverlayVideo();
+        else $('overlayMediaMount').innerHTML = '';
+        playAlarmTone();
+        requestWakeLock();
+        openModal('alarmOverlay');
+        notify('Alarm', instance.alarm.label);
+      }
+
+      function closeAlarmOverlay(){
+        closeModal('alarmOverlay');
+        $('overlayMediaMount').innerHTML = '';
+        state.activeAlarmInstance = null;
+        state.playerUrls = [];
+        state.playerIndex = 0;
+        if(window.speechSynthesis) window.speechSynthesis.cancel();
+        releaseWakeLock();
+      }
+
+      function loadOverlayVideo(){
+        if(!state.playerUrls.length) return;
+        const raw = state.playerUrls[state.playerIndex] || '';
+        const mount = $('overlayMediaMount');
+        mount.innerHTML = '';
+
+        if(isDirectMediaUrl(raw)){
+          renderDirectMedia(raw);
+          return;
+        }
+
+        const videoId = extractYoutubeId(raw);
+        if(!videoId){
+          renderMediaFallback(raw, 'Bu bağlantı gömülü video olarak oynatılamadı.');
+          return;
+        }
+
+        const iframe = document.createElement('iframe');
+        iframe.className = 'player';
+        iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+        iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+        iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+        mount.appendChild(iframe);
+
+        const fallbackTimer = setTimeout(() => {
+          if(!mount.contains(iframe)) return;
+          renderMediaFallback(raw, 'YouTube bu videonun gömülü oynatılmasına izin vermiyor olabilir.');
+        }, 3500);
+
+        iframe.addEventListener('load', () => clearTimeout(fallbackTimer), { once:true });
+        iframe.addEventListener('error', () => {
+          clearTimeout(fallbackTimer);
+          renderMediaFallback(raw, 'Video uygulama içinde yüklenemedi.');
+        }, { once:true });
+      }
+
+      function dismissActiveAlarm(){
+        closeAlarmOverlay();
+        showToast('Alarm kapatıldı.', 'success');
+      }
+
+      function snoozeActiveAlarm(){
+        if(!state.activeAlarmInstance) return;
+        const alarm = state.activeAlarmInstance.alarm;
+        const snoozeMinutes = Number(alarm.snoozeMinutes || state.settings.defaultSnooze || 10);
+        const target = new Date(Date.now() + snoozeMinutes * 60000);
+        state.alarms.unshift(normalizeAlarm({
+          time: hhmmFromDate(target),
+          label: `${alarm.label} (Erteleme)`,
+          days: [target.getDay()],
+          snoozeMinutes,
+          active: true,
+          urls: alarm.urls,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        }));
+        saveJSON(STORAGE_KEYS.alarms, state.alarms);
+        closeAlarmOverlay();
+        renderAlarms();
+        updateStats();
+        showToast(`Alarm ${snoozeMinutes} dakika ertelendi.`, 'success');
+      }
+
+      function processDueAlarms(){
+        const now = new Date();
+        const toleranceMs = 70000;
+        for(const alarm of state.alarms){
+          if(!alarm.active) continue;
+          const prev = previousOccurrenceForAlarm(alarm, now);
+          if(!prev) continue;
+          const diff = now.getTime() - prev.getTime();
+          if(diff < 0 || diff > toleranceMs) continue;
+          const triggerKey = buildTriggerKey(alarm, prev);
+          if(alarm.lastTriggeredAt === triggerKey) continue;
+          alarm.lastTriggeredAt = triggerKey;
+          alarm.updatedAt = new Date().toISOString();
+          saveJSON(STORAGE_KEYS.alarms, state.alarms);
+          openAlarmOverlay({ alarm, triggerAt: prev, missed: diff > 5000 });
+          renderAlarms();
+          updateStats();
+          break;
+        }
+      }
+
+      function checkAlarms(){
+        processDueAlarms();
+      }
+
+      function formatTimerText(){
+        let totalMs = state.timer.remainingMs;
+        if(state.timer.running && state.timer.endAt){ totalMs = Math.max(0, state.timer.endAt - Date.now()); }
+        const totalSec = Math.ceil(totalMs / 1000);
+        const mins = Math.floor(totalSec / 60);
+        const secs = totalSec % 60;
+        return `${pad(mins)}:${pad(secs)}`;
+      }
+
+      function renderTimer(){
+        $('timerDisplay').textContent = formatTimerText();
+        $('statTimerState').textContent = formatTimerText();
+      }
+
+      function startTimer(seconds = null){
+        let totalSeconds = seconds;
+        if(totalSeconds == null){
+          totalSeconds = Math.max(0, Number($('timerMinutes').value || 0) * 60 + Number($('timerSeconds').value || 0));
+        }
+        if(totalSeconds <= 0){ showToast('Geçerli bir süre girin.', 'error'); return; }
+        state.timer.running = true;
+        state.timer.endAt = Date.now() + totalSeconds * 1000;
+        state.timer.remainingMs = totalSeconds * 1000;
+        renderTimer();
+        updateStats();
+      }
+
+      function pauseTimer(){
+        if(!state.timer.running) return;
+        state.timer.remainingMs = Math.max(0, state.timer.endAt - Date.now());
+        state.timer.running = false;
+        state.timer.endAt = null;
+        renderTimer();
+      }
+
+      function resetTimer(){
+        state.timer = { endAt:null, remainingMs:0, running:false };
+        renderTimer();
+        updateStats();
+      }
+
+      function tickTimer(){
+        if(state.timer.running && state.timer.endAt){
+          if(Date.now() >= state.timer.endAt){
+            state.timer.running = false;
+            state.timer.remainingMs = 0;
+            state.timer.endAt = null;
+            renderTimer();
+            updateStats();
+            playTone('chime');
+            showToast('Sayaç tamamlandı.', 'success');
+            notify('Sayaç', 'Geri sayım tamamlandı.');
+            speak('Süre doldu.');
+          } else {
+            renderTimer();
+          }
+        }
+      }
+
+      function handleVoice(){
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if(!SR){
+          showToast('Bu tarayıcı sesli komutu desteklemiyor.', 'error');
+          return;
+        }
+        if(state.recognition){
+          state.recognition.stop();
+          state.recognition = null;
+          els.btnVoice.textContent = 'Sesli Komut';
+          showToast('Sesli dinleme durduruldu.', 'info');
+          return;
+        }
+        const recognition = new SR();
+        recognition.lang = 'tr-TR';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognition.onresult = (event) => {
+          const text = safeText(event.results?.[0]?.[0]?.transcript || '').toLocaleLowerCase('tr-TR');
+          if(text.includes('alarm ekle')){ resetAlarmForm(); }
+          else if(text.includes('randevu ekle')){ resetAppointmentForm(); }
+          else if(text.includes('saat kaç')){ speak(`Saat ${$('liveClock').textContent}`); }
+          else if(text.includes('alarmı kapat') || text.includes('alarm kapat')){ dismissActiveAlarm(); }
+          else { showToast(`Algılandı: ${text}`, 'info'); }
+        };
+        recognition.onerror = () => showToast('Sesli komut sırasında hata oluştu.', 'error');
+        recognition.onend = () => { state.recognition = null; els.btnVoice.textContent = 'Sesli Komut'; };
+        recognition.start();
+        state.recognition = recognition;
+        els.btnVoice.textContent = 'Dinleniyor...';
+        showToast('Sesli dinleme başladı.', 'success');
+      }
+
+
+      function setInstallState(text, mode='unsupported'){
+        const badge = $('installState');
+        const card = $('installStateCard');
+        if(badge){
+          badge.textContent = `Kurulum: ${text}`;
+          badge.classList.remove('pending','unsupported');
+          if(mode === 'pending') badge.classList.add('pending');
+          else if(mode === 'ready') badge.classList.add('install-pill');
+          else badge.classList.add('unsupported');
+        }
+        if(card) card.textContent = text;
+      }
+
+      function createIconDataUrl(size = 512){
+        const svg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 512 512">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#6ee7ff"/>
+                <stop offset="55%" stop-color="#9f7aea"/>
+                <stop offset="100%" stop-color="#ff78b2"/>
+              </linearGradient>
+            </defs>
+            <rect x="24" y="24" width="464" height="464" rx="128" fill="#0b1020"/>
+            <rect x="24" y="24" width="464" height="464" rx="128" fill="url(#g)" opacity="0.18"/>
+            <circle cx="256" cy="256" r="72" fill="none" stroke="#6ee7ff" stroke-width="20"/>
+            <path d="M256 92v52M256 368v52M140 140l36 36M336 336l36 36M92 256h52M368 256h52M140 372l36-36M336 176l36-36" stroke="#6ee7ff" stroke-width="18" stroke-linecap="round"/>
+          </svg>
+        `.trim();
+        return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+      }
+
+      function setupDynamicManifest(){
+        try{
+          const icon192 = createIconDataUrl(192);
+          const icon512 = createIconDataUrl(512);
+          const manifest = {
+            name: 'AI Sekreter Pro V6',
+            short_name: 'AI Sekreter',
+            description: 'Offline embedded alarm, randevu ve sayaç uygulaması',
+            display: 'standalone',
+            background_color: '#0b1020',
+            theme_color: '#0b1020',
+            start_url: './',
+            scope: './',
+            orientation: 'portrait-primary',
+            icons: [
+              { src: icon192, sizes: '192x192', type: 'image/svg+xml', purpose: 'any maskable' },
+              { src: icon512, sizes: '512x512', type: 'image/svg+xml', purpose: 'any maskable' }
+            ]
+          };
+          const blob = new Blob([JSON.stringify(manifest)], { type:'application/manifest+json' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('link');
+          link.rel = 'manifest';
+          link.href = url;
+          document.head.appendChild(link);
+
+          const apple = document.createElement('link');
+          apple.rel = 'apple-touch-icon';
+          apple.href = icon192;
+          document.head.appendChild(apple);
+
+          const favicon = document.createElement('link');
+          favicon.rel = 'icon';
+          favicon.type = 'image/svg+xml';
+          favicon.href = icon192;
+          document.head.appendChild(favicon);
+        } catch(e){
+          console.warn('Manifest oluşturulamadı', e);
+        }
+      }
+
+      async function registerInlineServiceWorker(){
+        if(!('serviceWorker' in navigator)) return false;
+        if(!window.isSecureContext || location.protocol === 'file:') return false;
+        try{
+          const swCode = `
+            const CACHE_NAME = 'ai-sekreter-pro-v6-cache-v1';
+            self.addEventListener('install', event => {
+              self.skipWaiting();
+              event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(['./'])).catch(() => {}));
+            });
+            self.addEventListener('activate', event => {
+              event.waitUntil(
+                caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))).then(() => self.clients.claim())
+              );
+            });
+            self.addEventListener('fetch', event => {
+              if(event.request.method !== 'GET') return;
+              event.respondWith(
+                caches.match(event.request).then(cached => {
+                  return cached || fetch(event.request).then(resp => {
+                    const clone = resp.clone();
+                    caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone)).catch(() => {});
+                    return resp;
+                  }).catch(() => cached);
+                })
+              );
+            });
+          `;
+          const swBlob = new Blob([swCode], { type: 'text/javascript' });
+          const swUrl = URL.createObjectURL(swBlob);
+          await navigator.serviceWorker.register(swUrl);
+          return true;
+        } catch(e){
+          console.warn('Service worker kaydı başarısız', e);
+          return false;
+        }
+      }
+
+      function updateDisplayMode(){
+        state.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        if(state.isStandalone){
+          setInstallState('Kurulu / bağımsız mod', 'ready');
+          $('btnInstallPWA').hidden = true;
+        }
+      }
+
+      async function installPWA(){
+        if(state.deferredInstallPrompt){
+          state.deferredInstallPrompt.prompt();
+          const choice = await state.deferredInstallPrompt.userChoice.catch(() => null);
+          if(choice && choice.outcome === 'accepted'){
+            showToast('Uygulama kurulumu başlatıldı.', 'success');
+          }
+          state.deferredInstallPrompt = null;
+          $('btnInstallPWA').hidden = true;
+          updateDisplayMode();
+          return;
+        }
+        if(location.protocol === 'file:'){
+          showToast('PWA kurulumu için dosyayı file:// yerine localhost veya HTTPS üzerinden açman gerekir.', 'info');
+          setInstallState('Kurulum için localhost/HTTPS gerekli', 'unsupported');
+          return;
+        }
+        showToast('Tarayıcı bu an için otomatik kurulum istemi vermiyor. Menüden “Uygulamayı yükle” seçeneğini deneyebilirsin.', 'info');
+      }
+
+      async function setupPWA(){
+        setupDynamicManifest();
+        updateDisplayMode();
+
+        if(location.protocol === 'file:'){
+          setInstallState('file:// modunda, kurulum pasif', 'unsupported');
+        } else if(window.isSecureContext){
+          const swOk = await registerInlineServiceWorker();
+          setInstallState(swOk ? 'Kuruluma hazır' : 'Kısmi destek', swOk ? 'pending' : 'unsupported');
+        } else {
+          setInstallState('Güvenli bağlam gerekli', 'unsupported');
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+          e.preventDefault();
+          state.deferredInstallPrompt = e;
+          $('btnInstallPWA').hidden = false;
+          setInstallState('Kuruluma hazır', 'pending');
+        });
+
+        window.addEventListener('appinstalled', () => {
+          state.deferredInstallPrompt = null;
+          $('btnInstallPWA').hidden = true;
+          setInstallState('Kuruldu', 'ready');
+          showToast('AI Sekreter cihazına eklendi.', 'success');
+        });
+      }
+
+      function hideSplash(){
+        const splash = $('splashScreen');
+        if(!splash) return;
+        const hint = $('splashHint');
+        if(hint) hint.textContent = 'Hazır. Panel açılıyor…';
+        setTimeout(() => splash.classList.add('hidden'), 900);
+      }
+
+      function exportData(){
+        const payload = {
+          exportedAt: new Date().toISOString(),
+          version: 'AI Sekreter Pro V6',
+          alarms: state.alarms,
+          appointments: state.appointments,
+          settings: state.settings,
+          worldClocks: state.worldClocks,
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type:'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ai-sekreter-v6-yedek-${dateInputValue(new Date())}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function importData(file){
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const data = JSON.parse(String(reader.result || '{}'));
+            state.alarms = Array.isArray(data.alarms) ? data.alarms.map(normalizeAlarm) : [];
+            state.appointments = Array.isArray(data.appointments) ? data.appointments.map(normalizeAppointment) : [];
+            state.settings = { ...state.settings, ...(data.settings || {}) };
+            state.worldClocks = Array.isArray(data.worldClocks) && data.worldClocks.length ? data.worldClocks : state.worldClocks;
+            persistAll();
+            refreshAll();
+            showToast('Veri içe aktarıldı.', 'success');
+          } catch {
+            showToast('JSON içe aktarma başarısız.', 'error');
+          }
+        };
+        reader.readAsText(file, 'utf-8');
+      }
+
+      function saveSettings(){
+        state.settings.defaultSnooze = Math.max(1, Math.min(120, Number($('settingSnooze').value || 10)));
+        state.settings.alarmSound = $('settingAlarmSound').value;
+        state.settings.note = safeText($('settingNote').value).slice(0,300);
+        saveJSON(STORAGE_KEYS.settings, state.settings);
+        showToast('Ayarlar kaydedildi.', 'success');
+      }
+
+      function hydrateSettings(){
+        $('settingSnooze').value = String(state.settings.defaultSnooze || 10);
+        $('settingAlarmSound').value = state.settings.alarmSound || 'beep';
+        $('settingNote').value = state.settings.note || '';
+      }
+
+      function populateTimezoneSelect(){
+        $('timezoneSelect').innerHTML = '';
+        timezoneOptions.forEach(([value,label]) => {
+          const opt = document.createElement('option');
+          opt.value = value; opt.textContent = `${label} • ${value}`;
+          $('timezoneSelect').appendChild(opt);
+        });
+      }
+
+      function addTimezone(){
+        const tz = $('timezoneSelect').value;
+        if(!tz || state.worldClocks.includes(tz)){
+          showToast('Bu şehir zaten listede olabilir.', 'info');
+          return;
+        }
+        state.worldClocks.push(tz);
+        saveJSON(STORAGE_KEYS.timezones, state.worldClocks);
+        renderWorldClocks();
+      }
+
+      function persistAll(){
+        saveJSON(STORAGE_KEYS.alarms, state.alarms);
+        saveJSON(STORAGE_KEYS.appointments, state.appointments);
+        saveJSON(STORAGE_KEYS.settings, state.settings);
+        saveJSON(STORAGE_KEYS.timezones, state.worldClocks);
+      }
+
+      function refreshAll(){
+        hydrateSettings();
+        renderAlarms();
+        renderAppointments();
+        renderCalendar();
+        renderWorldClocks();
+        updateStats();
+        updateLiveClock();
+      }
+
+      function bindEvents(){
+        document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', () => closeModal(btn.dataset.close)));
+        $('btnOpenAlarm').addEventListener('click', resetAlarmForm);
+        $('btnOpenAlarm2').addEventListener('click', resetAlarmForm);
+        $('btnOpenAppointment').addEventListener('click', resetAppointmentForm);
+        $('btnOpenAppointment2').addEventListener('click', resetAppointmentForm);
+        $('btnAddUrl').addEventListener('click', () => addUrlRow());
+        $('btnSaveAlarm').addEventListener('click', saveAlarm);
+        $('btnSaveAppointment').addEventListener('click', saveAppointment);
+        $('btnRequestNotification').addEventListener('click', requestNotifications);
+        $('btnVoice').addEventListener('click', handleVoice);
+        $('btnInstallPWA').addEventListener('click', installPWA);
+        $('alarmSearch').addEventListener('input', renderAlarms);
+        $('alarmFilter').addEventListener('change', renderAlarms);
+        $('appointmentSearch').addEventListener('input', renderAppointments);
+        $('appointmentFilter').addEventListener('change', renderAppointments);
+        $('prevMonth').addEventListener('click', () => { state.calendarDate = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth()-1, 1); renderCalendar(); });
+        $('nextMonth').addEventListener('click', () => { state.calendarDate = new Date(state.calendarDate.getFullYear(), state.calendarDate.getMonth()+1, 1); renderCalendar(); });
+        $('btnStartTimer').addEventListener('click', () => startTimer());
+        $('btnPauseTimer').addEventListener('click', pauseTimer);
+        $('btnResetTimer').addEventListener('click', resetTimer);
+        $('timerPreset').addEventListener('change', (e) => { if(e.target.value) startTimer(Number(e.target.value)); e.target.value=''; });
+        document.querySelectorAll('[data-preset]').forEach(btn => btn.addEventListener('click', () => startTimer(Number(btn.dataset.preset))));
+        $('btnDismissAlarm').addEventListener('click', dismissActiveAlarm);
+        $('btnSnooze').addEventListener('click', snoozeActiveAlarm);
+        $('btnNextVideo').addEventListener('click', () => { if(!state.playerUrls.length) return; state.playerIndex = (state.playerIndex + 1) % state.playerUrls.length; loadOverlayVideo(); });
+        $('btnOpenVideo').addEventListener('click', () => { const raw = state.playerUrls[state.playerIndex]; if(raw) openExternalUrl(raw); });
+        $('btnSaveSettings').addEventListener('click', saveSettings);
+        $('btnOpenTechNotes').addEventListener('click', () => openModal('techNotesModal'));
+        $('btnExport').addEventListener('click', exportData);
+        $('importFile').addEventListener('change', e => importData(e.target.files?.[0]));
+        $('btnResetData').addEventListener('click', () => {
+          if(!confirm('Tüm alarm, randevu ve ayarlar silinsin mi?')) return;
+          localStorage.removeItem(STORAGE_KEYS.alarms);
+          localStorage.removeItem(STORAGE_KEYS.appointments);
+          localStorage.removeItem(STORAGE_KEYS.settings);
+          localStorage.removeItem(STORAGE_KEYS.timezones);
+          state.alarms = []; state.appointments = []; state.settings = { defaultSnooze:10, alarmSound:'beep', note:'' }; state.worldClocks = ['Europe/Istanbul','Europe/London','America/New_York','Asia/Tokyo'];
+          refreshAll();
+          hydrateSettings();
+          showToast('Tüm veriler temizlendi.', 'info');
+        });
+        $('btnAddTimezone').addEventListener('click', addTimezone);
+        document.addEventListener('visibilitychange', () => { if(!document.hidden) processDueAlarms(); });
+        window.addEventListener('focus', () => processDueAlarms());
+        window.addEventListener('keydown', (e) => {
+          if(e.key === 'Escape') document.querySelectorAll('.modal.show,.overlay.show').forEach(node => node.classList.remove('show'));
+          if(e.target && ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
+          if(e.key.toLowerCase() === 'a') resetAlarmForm();
+          if(e.key.toLowerCase() === 'r') resetAppointmentForm();
+          if(e.key === '/') { e.preventDefault(); $('alarmSearch').focus(); }
+        });
+      }
+
+      function initEls(){
+        ['alarmDays','urlRows','toastWrap','alarmsList','appointmentsList','calendarGrid','worldClockList','notifState','voiceState','btnVoice','btnInstallPWA','installState','installStateCard','splashScreen','splashHint']
+          .forEach(id => els[id] = $(id));
+      }
+
+      function initState(){
+        state.alarms = loadJSON(STORAGE_KEYS.alarms, []).map(normalizeAlarm);
+        state.appointments = loadJSON(STORAGE_KEYS.appointments, []).map(normalizeAppointment);
+        state.settings = { ...state.settings, ...loadJSON(STORAGE_KEYS.settings, {}) };
+        state.worldClocks = loadJSON(STORAGE_KEYS.timezones, state.worldClocks);
+      }
+
+      async function boot(){
+        initEls();
+        initState();
+        buildDayButtons();
+        renderTabs();
+        populateTimezoneSelect();
+        bindEvents();
+        updatePermissionBadges();
+        refreshAll();
+        await setupPWA();
+        setInterval(updateLiveClock, 1000);
+        setInterval(checkAppointments, 15000);
+        setInterval(checkAlarms, 1000);
+        setInterval(tickTimer, 250);
+        setTimeout(processDueAlarms, 300);
+        hideSplash();
+      }
+
+      boot();
+    })();
+  </script>
+</body>
+</html>
